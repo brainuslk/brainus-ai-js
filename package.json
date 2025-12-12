@@ -1,6 +1,6 @@
 {
   "name": "@brainus/ai",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Official JavaScript/TypeScript SDK for Brainus AI - RAG-powered educational content API",
   "type": "module",
   "main": "./dist/index.js",
@@ -39,7 +39,7 @@
     "sdk",
     "typescript"
   ],
-  "author": "Brainus Team <dev@brainus.lk>",
+  "author": "Brainus Team <developers@brainus.lk>",
   "license": "MIT",
   "repository": {
     "type": "git",

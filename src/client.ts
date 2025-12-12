@@ -29,7 +29,7 @@ export class BrainusAI {
    * ```ts
    * import { BrainusAI } from '@brainus/ai'
    *
-   * const client = new BrainusAI({ apiKey: 'sk_live_...' })
+   * const client = new BrainusAI({ apiKey: 'brainus_...' })
    * const response = await client.query({
    *   query: 'What is Python?',
    *   storeId: 'abc123' // Optional - uses default if not provided
@@ -37,8 +37,8 @@ export class BrainusAI {
    * ```
    */
   constructor(config: BrainusAIConfig) {
-    if (!config.apiKey || !config.apiKey.startsWith("sk_live_")) {
-      throw new Error("Invalid API key format. Expected format: sk_live_...");
+    if (!config.apiKey || !config.apiKey.startsWith("brainus_")) {
+      throw new Error("Invalid API key format. Expected format: brainus_...");
     }
 
     this.apiKey = config.apiKey;
@@ -66,24 +66,36 @@ export class BrainusAI {
    * ```
    */
   async query(request: QueryRequest): Promise<QueryResponse> {
+    // Build request body, omitting undefined values
+    const body: Record<string, unknown> = {
+      query: request.query,
+    };
+
+    if (request.storeId !== undefined) {
+      body.store_id = request.storeId;
+    }
+
+    if (request.filters !== undefined) {
+      body.filters = request.filters;
+    }
+
+    if (request.model !== undefined) {
+      body.model = request.model;
+    }
+
     const response = await this.makeRequest<QueryResponse>(
       "POST",
       "/api/v1/dev/query",
-      {
-        query: request.query,
-        store_id: request.storeId,
-        filters: request.filters,
-        model: request.model,
-      }
+      body
     );
 
     // Convert snake_case to camelCase
     return {
       answer: response.answer,
-      citations: response.citations.map((c) => ({
+      citations: (response.citations || []).map((c) => ({
         documentId: (c as any).document_id,
         documentName: (c as any).document_name,
-        pages: c.pages,
+        pages: c.pages || [],
         metadata: c.metadata,
         chunkText: (c as any).chunk_text,
       })),
@@ -175,7 +187,7 @@ export class BrainusAI {
             "Content-Type": "application/json",
             "User-Agent": "@brainus/ai/0.1.0",
           },
-          body: body ? JSON.stringify(body) : undefined,
+          body: body ? JSON.stringify(body, null, 0) : undefined,
           signal: AbortSignal.timeout(this.timeout),
         });
 
@@ -219,8 +231,12 @@ export class BrainusAI {
     let errorMessage: string;
 
     try {
-      const errorData = (await response.json()) as { detail?: string };
-      errorMessage = errorData.detail || response.statusText;
+      const errorData = (await response.json()) as {
+        detail?: string;
+        message?: string;
+      };
+      errorMessage =
+        errorData.detail || errorData.message || response.statusText;
     } catch {
       errorMessage = response.statusText;
     }

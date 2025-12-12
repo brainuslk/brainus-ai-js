@@ -3,7 +3,7 @@
  */
 
 export interface BrainusAIConfig {
-  /** Your Brainus AI API key (sk_live_...) */
+  /** Your Brainus AI API key (brainus_...) */
   apiKey: string;
   /** Base URL for the API (default: production gateway) */
   baseUrl?: string;
