@@ -3,14 +3,14 @@
   "version": "0.1.4",
   "description": "Official JavaScript/TypeScript SDK for Brainus AI - RAG-powered educational content API",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -45,7 +45,7 @@
     "type": "git",
     "url": "https://github.com/brainuslk/brainus-ai-js.git"
   },
-  "homepage": "https://developer.brainus.lk",
+  "homepage": "https://developers.brainus.lk",
   "bugs": {
     "url": "https://github.com/brainuslk/brainus-ai-js/issues"
   },
