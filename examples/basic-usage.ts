@@ -41,7 +41,7 @@ async function main() {
     const filteredResponse = await client.query({
       query: "Explain inheritance in programming",
       storeId: "your_store_id", // Optional
-      model: "gemini-2.5-flash", // Optional
+      model: "brainusai-thinking", // Optional
       filters: {
         subject: "ICT",
         grade: "12",
@@ -87,3 +87,15 @@ async function main() {
 }
 
 main();
+
+
+
+
+
+
+
+
+
+
+
+

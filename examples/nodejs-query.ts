@@ -73,7 +73,7 @@ async function queryWithFilters() {
 async function queryWithModel() {
   const result = await client.query({
     query: "Explain DNA structure",
-    model: "gemini-2.5-flash",
+    model: "brainusai-thinking",
     filters: {
       subject: "biology",
     },

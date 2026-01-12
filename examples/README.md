@@ -103,7 +103,7 @@ await client.query({
     grade: "12",
     language: "English",
   },
-  model: "gemini-2.5-flash", // Optional
+  model: "brainusai-thinking", // Optional
 });
 ```
 
