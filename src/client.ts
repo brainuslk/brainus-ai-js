@@ -15,6 +15,58 @@ import {
   QuotaExceededError,
   APIError,
 } from "./errors";
+import { VERSION } from "./version";
+
+// Internal types matching backend snake_case responses
+interface _BackendCitation {
+  document_id: string;
+  document_name: string;
+  pages?: number[];
+  metadata?: Record<string, unknown>;
+  chunk_text?: string;
+}
+
+interface _BackendQueryResponse {
+  answer: string;
+  citations: _BackendCitation[];
+  has_citations: boolean;
+}
+
+interface _BackendPlanInfo {
+  name: string;
+  rate_limit_per_minute: number;
+  rate_limit_per_day: number;
+  monthly_quota?: number;
+}
+
+interface _BackendUsageResponse {
+  total_requests: number;
+  total_tokens?: number;
+  total_cost_usd?: number;
+  by_endpoint?: Record<string, number>;
+  quota_remaining?: number;
+  quota_percentage?: number;
+  plan?: _BackendPlanInfo;
+  period_start?: string;
+  period_end?: string;
+}
+
+interface _BackendPlan {
+  id: string;
+  name: string;
+  description?: string;
+  rate_limit_per_minute: number;
+  rate_limit_per_day: number;
+  monthly_quota?: number;
+  price_lkr?: number;
+  allowed_models?: string[];
+  features?: Record<string, unknown>;
+  is_active: boolean;
+}
+
+interface _BackendPlansResponse {
+  plans: _BackendPlan[];
+}
 
 export class BrainusAI {
   private apiKey: string;
@@ -27,21 +79,26 @@ export class BrainusAI {
    *
    * @example
    * ```ts
-   * import { BrainusAI } from '@brainus/ai'
-   *
+   * // Explicit API key
    * const client = new BrainusAI({ apiKey: 'brainus_...' })
-   * const response = await client.query({
-   *   query: 'What is Python?',
-   *   storeId: 'abc123' // Optional - uses default if not provided
-   * })
+   *
+   * // From environment variable BRAINUS_API_KEY
+   * const client = new BrainusAI()
    * ```
    */
-  constructor(config: BrainusAIConfig) {
-    if (!config.apiKey || !config.apiKey.startsWith("brainus_")) {
-      throw new Error("Invalid API key format. Expected format: brainus_...");
+  constructor(config: BrainusAIConfig = {}) {
+    const apiKey =
+      config.apiKey ??
+      (typeof process !== "undefined" ? process.env?.BRAINUS_API_KEY : undefined) ??
+      "";
+
+    if (!apiKey || !apiKey.startsWith("brainus_")) {
+      throw new Error(
+        "Invalid API key. Pass apiKey or set the BRAINUS_API_KEY environment variable."
+      );
     }
 
-    this.apiKey = config.apiKey;
+    this.apiKey = apiKey;
     this.baseUrl = config.baseUrl ?? "https://api.brainus.lk";
     this.timeout = config.timeout ?? 30000;
     this.maxRetries = config.maxRetries ?? 3;
@@ -66,7 +123,6 @@ export class BrainusAI {
    * ```
    */
   async query(request: QueryRequest): Promise<QueryResponse> {
-    // Build request body, omitting undefined values
     const body: Record<string, unknown> = {
       query: request.query,
     };
@@ -83,23 +139,22 @@ export class BrainusAI {
       body.model = request.model;
     }
 
-    const response = await this.makeRequest<QueryResponse>(
+    const response = await this.makeRequest<_BackendQueryResponse>(
       "POST",
       "/api/v1/dev/query",
       body
     );
 
-    // Convert snake_case to camelCase
     return {
       answer: response.answer,
-      citations: (response.citations || []).map((c) => ({
-        documentId: (c as any).document_id,
-        documentName: (c as any).document_name,
-        pages: c.pages || [],
-        metadata: c.metadata,
-        chunkText: (c as any).chunk_text,
+      citations: (response.citations ?? []).map((c) => ({
+        documentId: c.document_id,
+        documentName: c.document_name,
+        pages: c.pages ?? [],
+        metadata: c.metadata ?? {},
+        chunkText: c.chunk_text,
       })),
-      hasCitations: (response as any).has_citations,
+      hasCitations: response.has_citations,
     };
   }
 
@@ -114,13 +169,16 @@ export class BrainusAI {
    * ```
    */
   async getUsage(): Promise<UsageStats> {
-    const response = await this.makeRequest<any>("GET", "/api/v1/dev/usage");
+    const response = await this.makeRequest<_BackendUsageResponse>(
+      "GET",
+      "/api/v1/dev/usage"
+    );
 
     return {
       totalRequests: response.total_requests,
       totalTokens: response.total_tokens,
       totalCostUsd: response.total_cost_usd,
-      byEndpoint: response.by_endpoint || {},
+      byEndpoint: response.by_endpoint ?? {},
       quotaRemaining: response.quota_remaining,
       quotaPercentage: response.quota_percentage,
       plan: response.plan
@@ -148,7 +206,7 @@ export class BrainusAI {
    * ```
    */
   async getPlans(): Promise<Plan[]> {
-    const response = await this.makeRequest<{ plans: any[] }>(
+    const response = await this.makeRequest<_BackendPlansResponse>(
       "GET",
       "/api/v1/dev/plans"
     );
@@ -161,8 +219,8 @@ export class BrainusAI {
       rateLimitPerDay: p.rate_limit_per_day,
       monthlyQuota: p.monthly_quota,
       priceLkr: p.price_lkr,
-      allowedModels: p.allowed_models || [],
-      features: p.features || {},
+      allowedModels: p.allowed_models ?? [],
+      features: p.features ?? {},
       isActive: p.is_active,
     }));
   }
@@ -185,7 +243,7 @@ export class BrainusAI {
           headers: {
             "X-API-Key": this.apiKey,
             "Content-Type": "application/json",
-            "User-Agent": "@brainus/ai/0.1.0",
+            "User-Agent": `@brainus/ai/${VERSION}`,
           },
           body: body ? JSON.stringify(body, null, 0) : undefined,
           signal: AbortSignal.timeout(this.timeout),

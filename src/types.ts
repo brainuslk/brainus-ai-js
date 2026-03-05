@@ -3,8 +3,8 @@
  */
 
 export interface BrainusAIConfig {
-  /** Your Brainus AI API key (brainus_...) */
-  apiKey: string;
+  /** Your Brainus AI API key (brainus_...). If not provided, reads from BRAINUS_API_KEY environment variable. */
+  apiKey?: string;
   /** Base URL for the API (default: production gateway) */
   baseUrl?: string;
   /** Request timeout in milliseconds */

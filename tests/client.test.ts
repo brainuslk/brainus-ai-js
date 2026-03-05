@@ -58,6 +58,40 @@ describe('BrainusAI - initialization', () => {
     expect((client as any).maxRetries).toBe(1)
   })
 
+  it('reads apiKey from BRAINUS_API_KEY env var when not passed', () => {
+    const original = process.env.BRAINUS_API_KEY
+    process.env.BRAINUS_API_KEY = 'brainus_from_env'
+    try {
+      const client = new BrainusAI()
+      expect((client as any).apiKey).toBe('brainus_from_env')
+    } finally {
+      if (original === undefined) delete process.env.BRAINUS_API_KEY
+      else process.env.BRAINUS_API_KEY = original
+    }
+  })
+
+  it('explicit apiKey takes priority over env var', () => {
+    const original = process.env.BRAINUS_API_KEY
+    process.env.BRAINUS_API_KEY = 'brainus_from_env'
+    try {
+      const client = new BrainusAI({ apiKey: 'brainus_explicit' })
+      expect((client as any).apiKey).toBe('brainus_explicit')
+    } finally {
+      if (original === undefined) delete process.env.BRAINUS_API_KEY
+      else process.env.BRAINUS_API_KEY = original
+    }
+  })
+
+  it('throws when no apiKey and no env var', () => {
+    const original = process.env.BRAINUS_API_KEY
+    delete process.env.BRAINUS_API_KEY
+    try {
+      expect(() => new BrainusAI()).toThrow(Error)
+    } finally {
+      if (original !== undefined) process.env.BRAINUS_API_KEY = original
+    }
+  })
+
   it('sends X-API-Key header on requests', async () => {
     const fetchMock = mockFetch(200, QUERY_RESPONSE)
     vi.stubGlobal('fetch', fetchMock)
