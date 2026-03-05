@@ -199,9 +199,10 @@ export class BrainusAI {
       } catch (error) {
         lastError = error as Error;
 
-        // Don't retry for auth errors or client errors
+        // Don't retry for auth errors, rate limit errors, or client errors
         if (
           error instanceof AuthenticationError ||
+          error instanceof RateLimitError ||
           error instanceof QuotaExceededError ||
           (error instanceof APIError &&
             error.statusCode &&
