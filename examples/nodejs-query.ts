@@ -11,9 +11,7 @@
 
 import { BrainusAI } from "@brainus/ai";
 
-const client = new BrainusAI({
-  apiKey: process.env.BRAINUS_API_KEY!,
-});
+const client = new BrainusAI();
 
 // ============================================
 // Basic Query - Direct SDK call

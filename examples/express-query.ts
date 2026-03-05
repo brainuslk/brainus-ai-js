@@ -12,9 +12,7 @@ import { BrainusAI } from "@brainus/ai";
 const app = express();
 app.use(express.json());
 
-const client = new BrainusAI({
-  apiKey: process.env.BRAINUS_API_KEY!, // Secret - stays on server
-});
+const client = new BrainusAI(); // Reads BRAINUS_API_KEY from environment — stays on server
 
 // API endpoint for client apps to call
 app.post("/api/query", async (req, res) => {

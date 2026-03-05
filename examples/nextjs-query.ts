@@ -16,9 +16,7 @@ import { NextRequest, NextResponse } from "next/server";
 // (SERVER-SIDE - Protects your API key)
 // ============================================
 
-const client = new BrainusAI({
-  apiKey: process.env.BRAINUS_API_KEY!, // Secret - stays on server
-});
+const client = new BrainusAI(); // Reads BRAINUS_API_KEY from environment — stays on server
 
 export async function POST(request: NextRequest) {
   try {
