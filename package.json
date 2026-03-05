@@ -1,6 +1,6 @@
 {
   "name": "@brainus/ai",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Official JavaScript/TypeScript SDK for Brainus AI - RAG-powered educational content API",
   "type": "module",
   "main": "./dist/index.cjs",

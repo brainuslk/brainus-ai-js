@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] - 2026-03-05
+
+### Added
+
+- Automatic environment variable support: `apiKey` is now optional and falls back to `BRAINUS_API_KEY` environment variable, enabling `new BrainusAI()` without passing credentials explicitly
+- Dynamic `VERSION` constant used in `User-Agent` header (`@brainus/ai/<version>`) instead of a hardcoded string
+
+### Changed
+
+- `apiKey` in `BrainusAIConfig` is now typed as `string | undefined` (optional) — backward compatible at runtime
+- Improved internal type safety with explicit backend response interfaces for camelCase mapping
+
 ## [0.1.5] - 2025-12-12
 
 ### Fixed
@@ -50,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ESM and CommonJS dual export
 - Zero dependencies (uses native fetch)
 
+[0.1.6]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.2...v0.1.3

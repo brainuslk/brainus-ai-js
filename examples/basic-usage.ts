@@ -4,15 +4,8 @@
 
 import { BrainusAI, AuthenticationError, RateLimitError } from "@brainus/ai";
 
-// Get API key from environment variable
-const apiKey = process.env.BRAINUS_API_KEY;
-if (!apiKey) {
-  console.error("Error: BRAINUS_API_KEY environment variable not set");
-  process.exit(1);
-}
-
-// Initialize client
-const client = new BrainusAI({ apiKey });
+// Initialize client — reads BRAINUS_API_KEY from environment automatically
+const client = new BrainusAI();
 
 async function main() {
   try {
