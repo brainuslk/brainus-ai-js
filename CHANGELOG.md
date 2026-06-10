@@ -68,11 +68,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ESM and CommonJS dual export
 - Zero dependencies (uses native fetch)
 
-[0.1.7]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.6...v0.1.7
-[0.1.6]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.5...v0.1.6
-[0.1.5]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.4...v0.1.5
-[0.1.4]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.3...v0.1.4
-[0.1.3]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.2...v0.1.3
-[0.1.2]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.1...v0.1.2
-[0.1.1]: https://github.com/brainuslk/brainus-ai-js/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/brainuslk/brainus-ai-js/releases/tag/v0.1.0
+[0.1.7]: https://github.com/brainushq/brainus-ai-js/compare/v0.1.6...v0.1.7
+[0.1.6]: https://github.com/brainushq/brainus-ai-js/compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com/brainushq/brainus-ai-js/compare/v0.1.4...v0.1.5
+[0.1.4]: https://github.com/brainushq/brainus-ai-js/compare/v0.1.3...v0.1.4
+[0.1.3]: https://github.com/brainushq/brainus-ai-js/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/brainushq/brainus-ai-js/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/brainushq/brainus-ai-js/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/brainushq/brainus-ai-js/releases/tag/v0.1.0

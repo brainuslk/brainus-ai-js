@@ -111,4 +111,4 @@ await client.query({
 
 - [Full Documentation](https://developers.brainus.lk/docs/sdks/javascript)
 - [Get API Key](https://developers.brainus.lk/dashboard/keys)
-- [GitHub Repository](https://github.com/brainuslk/brainus-ai-js)
+- [GitHub Repository](https://github.com/brainushq/brainus-ai-js)

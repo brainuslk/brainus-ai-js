@@ -43,11 +43,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brainuslk/brainus-ai-js.git"
+    "url": "git+https://github.com/brainushq/brainus-ai-js.git"
   },
   "homepage": "https://developers.brainus.lk",
   "bugs": {
-    "url": "https://github.com/brainuslk/brainus-ai-js/issues"
+    "url": "https://github.com/brainushq/brainus-ai-js/issues"
   },
   "dependencies": {},
   "devDependencies": {
